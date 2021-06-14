@@ -35,7 +35,14 @@ const addEstrella = leyenda => {
     return newLeyendas;
 }
 
+const sortByEstrellas = () => [...leyendas].sort((a, b) => b.estrellas - a.estrellas);
+
+const chunkAndMap = (array, size) => chunk(array, size).map(mapLeyendas);
+
 const processUser = user => {
+    if(user === '') {
+        return 'Debe escribir un nombre. Madge';
+    }
     var leyenda = leyendas.find(l => l.user === user);
     if(leyenda) {
         leyendas = addEstrella(leyenda);
@@ -68,4 +75,6 @@ const txtName = i => `leyendas${i}.txt`
 
 const chunkLeyendas = size => chunk(leyendas, size).map(mapLeyendas);
 
-module.exports = {processUser, saveJson, writeTxt, chunkLeyendas}
+const actualizarLeyendas = array => leyendas = array;
+
+module.exports = {processUser, saveJson, writeTxt, chunkLeyendas, sortByEstrellas, chunkAndMap, actualizarLeyendas}

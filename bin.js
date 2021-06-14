@@ -5,10 +5,14 @@ const menu = () => inquirer.prompt([{
     type: 'list',
     name: 'option',
     message: 'Elija una opcion',
-    choices: ['Agregar leyenda/estrella', 'Previsualizar', 'Salir y guardar', 'Salir']
+    choices: ['Agregar leyenda/estrella', 'Ordenar lista', 'Previsualizar', 'Salir y guardar', 'Salir']
 }]).then(answer => {
     switch (answer.option) {
         case 'Agregar leyenda/estrella': addLeyenda(); break;
+        case 'Ordenar lista': {
+            ordenarLista();
+            break;
+        }
         case 'Previsualizar': {
             console.clear();
             index.chunkLeyendas(15).forEach((e, i) => console.log(`\nLeyendas ${++i}: ${e}\n`));
@@ -48,6 +52,23 @@ const addLeyenda = () => {
                 menu();
             }
         })
+    })
+}
+
+const ordenarLista = () => {
+    console.clear();
+    const listaOrdenada = index.sortByEstrellas();
+    index.chunkAndMap(listaOrdenada, 15).forEach((e, i) => console.log(`\nLeyendas ${++i}: ${e}\n`));
+    inquirer.prompt([{
+        type: 'confirm',
+        name: 'save',
+        message: '¿Desea confirmar los cambios?'
+    }]).then(answer => {
+        if(answer.save) {
+            index.actualizarLeyendas(listaOrdenada);
+            console.log('Lista actualizada. Okayge\n');
+        }
+        menu();
     })
 }
 
