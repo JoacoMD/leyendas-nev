@@ -5,12 +5,16 @@ const menu = () => inquirer.prompt([{
     type: 'list',
     name: 'option',
     message: 'Elija una opcion',
-    choices: ['Agregar leyenda/estrella', 'Ordenar lista', 'Previsualizar', 'Salir y guardar', 'Salir']
+    choices: ['Agregar leyenda/estrella', 'Ordenar lista', 'Eliminar leyenda', 'Previsualizar', 'Salir y guardar', 'Salir']
 }]).then(answer => {
     switch (answer.option) {
         case 'Agregar leyenda/estrella': addLeyenda(); break;
         case 'Ordenar lista': {
             ordenarLista();
+            break;
+        }
+        case 'Eliminar leyenda': {
+            eliminarLeyenda();
             break;
         }
         case 'Previsualizar': {
@@ -69,6 +73,29 @@ const ordenarLista = () => {
             console.log('Lista actualizada. Okayge\n');
         }
         menu();
+    })
+}
+
+const eliminarLeyenda = () => {
+    inquirer.prompt([{
+        type: 'list',
+        name: 'delete',
+        message: 'Elija al usuario que quiera eliminar',
+        choices: index.getLeyendas().map(l => l.user)
+    }]).then(a => {
+        console.log(index.eliminarLeyenda(a.delete));
+        inquirer.prompt([{
+            type: 'confirm',
+            name: 'addAgain',
+            message: '¿Quiere eliminar otra leyenda?',
+        }]).then(a => {
+            if(a.addAgain) {
+                eliminarLeyenda();
+            } else {
+                console.clear();
+                menu();
+            }
+        })
     })
 }
 

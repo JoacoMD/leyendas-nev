@@ -77,4 +77,11 @@ const chunkLeyendas = size => chunk(leyendas, size).map(mapLeyendas);
 
 const actualizarLeyendas = array => leyendas = array;
 
-module.exports = {processUser, saveJson, writeTxt, chunkLeyendas, sortByEstrellas, chunkAndMap, actualizarLeyendas}
+const getLeyendas = () => leyendas.slice();
+
+const eliminarLeyenda = user => {
+    leyendas = leyendas.filter(l => l.user !== user);
+    return `Se ha eliminado la leyenda ${user}`;
+}
+
+module.exports = {processUser, saveJson, writeTxt, chunkLeyendas, sortByEstrellas, chunkAndMap, actualizarLeyendas, getLeyendas, eliminarLeyenda}
